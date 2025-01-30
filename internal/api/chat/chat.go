@@ -15,6 +15,7 @@
 package chat
 
 import (
+	"fmt"
 	"io"
 	"time"
 
@@ -125,9 +126,16 @@ func (o *Api) RegisterUser(c *gin.Context) {
 		apiresp.GinError(c, err)
 		return
 	}
+	// get account total
+	_, total, err := o.imApiCaller.UserRegisterCount(apiCtx, 0, time.Now().UnixMilli())
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
+
 	userInfo := &sdkws.UserInfo{
 		UserID:     respRegisterUser.UserID,
-		Nickname:   req.User.Nickname,
+		Nickname:   fmt.Sprintf("%d", total+1),
 		FaceURL:    req.User.FaceURL,
 		CreateTime: time.Now().UnixMilli(),
 	}
