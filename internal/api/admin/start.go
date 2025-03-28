@@ -3,6 +3,7 @@ package admin
 import (
 	"context"
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 	chatmw "github.com/openimsdk/chat/internal/api/mw"
 	"github.com/openimsdk/chat/internal/api/util"
@@ -124,8 +125,8 @@ func SetAdminRoute(router gin.IRouter, admin *Api, mw *chatmw.MW) {
 	blockRouter.POST("/del", admin.UnblockUser)        // Unblock user
 	blockRouter.POST("/search", admin.SearchBlockUser) // Search blocked users
 
-	userRouter := router.Group("/user", mw.CheckAdmin)
-	userRouter.POST("/password/reset", admin.ResetUserPassword) // Reset user password
+	// userRouter := router.Group("/user", mw.CheckAdmin)
+	// userRouter.POST("/password/reset", admin.ResetUserPassword) // Reset user password
 
 	initGroup := router.Group("/client_config", mw.CheckAdmin)
 	initGroup.POST("/get", admin.GetClientConfig) // Get client initialization configuration
