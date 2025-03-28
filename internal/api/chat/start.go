@@ -72,7 +72,7 @@ func SetChatRoute(router gin.IRouter, chat *Api, mw *chatmw.MW) {
 	account.POST("/password/reset", chat.ResetPassword)                  // Forgot password
 	account.POST("/password/change", mw.CheckToken, chat.ChangePassword) // Change password
 
-	user := router.Group("/user", mw.CheckToken)
+	user := router.Group("/user")
 	user.POST("/update", chat.UpdateUserInfo)                 // Edit personal information
 	user.POST("/find/public", chat.FindUserPublicInfo)        // Get user's public information
 	user.POST("/find/full", chat.FindUserFullInfo)            // Get all information of the user

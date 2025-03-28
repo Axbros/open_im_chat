@@ -17,12 +17,13 @@ package chat
 import (
 	"context"
 	"errors"
-	"github.com/openimsdk/chat/pkg/eerrs"
-	"github.com/openimsdk/protocol/wrapperspb"
-	"github.com/openimsdk/tools/utils/stringutil"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/openimsdk/chat/pkg/eerrs"
+	"github.com/openimsdk/protocol/wrapperspb"
+	"github.com/openimsdk/tools/utils/stringutil"
 
 	"github.com/openimsdk/chat/pkg/common/db/dbutil"
 	chatdb "github.com/openimsdk/chat/pkg/common/db/table/chat"
@@ -337,6 +338,7 @@ func (o *chatSvr) FindUserFullInfo(ctx context.Context, req *chat.FindUserFullIn
 }
 
 func (o *chatSvr) SearchUserFullInfo(ctx context.Context, req *chat.SearchUserFullInfoReq) (*chat.SearchUserFullInfoResp, error) {
+
 	if _, _, err := mctx.Check(ctx); err != nil {
 		return nil, err
 	}
