@@ -2,9 +2,10 @@ package imapi
 
 import (
 	"context"
-	"github.com/openimsdk/tools/log"
 	"sync"
 	"time"
+
+	"github.com/openimsdk/tools/log"
 
 	"github.com/openimsdk/chat/pkg/eerrs"
 	"github.com/openimsdk/protocol/auth"
@@ -26,7 +27,7 @@ type CallerInterface interface {
 	ForceOffLine(ctx context.Context, userID string) error
 	RegisterUser(ctx context.Context, users []*sdkws.UserInfo) error
 	FindGroupInfo(ctx context.Context, groupIDs []string) ([]*sdkws.GroupInfo, error)
-	UserRegisterCount(ctx context.Context, start int64, end int64) (map[string]int64, int64, error)
+	UserRegisterCount(ctx context.Context, start int64, end int64) (int64, error)
 	FriendUserIDs(ctx context.Context, userID string) ([]string, error)
 	AccountCheckSingle(ctx context.Context, userID string) (bool, error)
 }
@@ -160,15 +161,16 @@ func (c *Caller) FindGroupInfo(ctx context.Context, groupIDs []string) ([]*sdkws
 	return resp.GroupInfos, nil
 }
 
-func (c *Caller) UserRegisterCount(ctx context.Context, start int64, end int64) (map[string]int64, int64, error) {
+func (c *Caller) UserRegisterCount(ctx context.Context, start int64, end int64) (int64, error) {
+	//start 和 end 可又可以 反正server不会判断 但是删除代码需要改openim内置源码 所以不改
 	resp, err := registerUserCount.Call(ctx, c.imApi, &user.UserRegisterCountReq{
 		Start: start,
 		End:   end,
 	})
 	if err != nil {
-		return nil, 0, err
+		return 0, err
 	}
-	return resp.Count, resp.Total, nil
+	return resp.Total, nil
 }
 
 func (c *Caller) FriendUserIDs(ctx context.Context, userID string) ([]string, error) {
