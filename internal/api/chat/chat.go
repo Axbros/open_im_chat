@@ -15,7 +15,6 @@
 package chat
 
 import (
-	"fmt"
 	"io"
 	"time"
 
@@ -97,12 +96,12 @@ func (o *Api) RegisterUser(c *gin.Context) {
 	}
 	apiCtx := mctx.WithApiToken(c, imToken)
 	rpcCtx := o.WithAdminUser(c)
-	_, total, err := o.imApiCaller.UserRegisterCount(apiCtx, 1738330377010, 1738330377011)
-	if err != nil {
-		apiresp.GinError(c, err)
-		return
-	}
-	req.User.Nickname = fmt.Sprintf("%d", total+1)
+	// total, err := o.imApiCaller.UserRegisterCount(apiCtx, 1738330377010, 1738330377011)
+	// if err != nil {
+	// 	apiresp.GinError(c, err)
+	// 	return
+	// }
+
 	checkResp, err := o.chatClient.CheckUserExist(rpcCtx, &chatpb.CheckUserExistReq{User: req.User})
 	if err != nil {
 		log.ZDebug(rpcCtx, "Not else", errs.Unwrap(err))
@@ -134,8 +133,7 @@ func (o *Api) RegisterUser(c *gin.Context) {
 
 	userInfo := &sdkws.UserInfo{
 		UserID:     respRegisterUser.UserID,
-		Nickname:   req.User.Nickname,
-		FaceURL:    req.User.FaceURL,
+		Nickname:   "USER",
 		CreateTime: time.Now().UnixMilli(),
 	}
 	err = o.imApiCaller.RegisterUser(apiCtx, []*sdkws.UserInfo{userInfo})

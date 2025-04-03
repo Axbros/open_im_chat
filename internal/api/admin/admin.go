@@ -387,13 +387,13 @@ func (o *Api) NewUserCount(c *gin.Context) {
 		apiresp.GinError(c, err)
 		return
 	}
-	dateCount, total, err := o.imApiCaller.UserRegisterCount(mctx.WithApiToken(c, imToken), req.Start, req.End)
+	total, err := o.imApiCaller.UserRegisterCount(mctx.WithApiToken(c, imToken), req.Start, req.End)
 	if err != nil {
 		apiresp.GinError(c, err)
 		return
 	}
 	apiresp.GinSuccess(c, &apistruct.NewUserCountResp{
-		DateCount: dateCount,
+		DateCount: nil,
 		Total:     total,
 	})
 }

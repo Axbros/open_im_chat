@@ -113,9 +113,7 @@ func (x *RegisterUserReq) Check() error {
 	//if x.VerifyCode == "" {
 	//	return errs.ErrArgs.WrapMsg("VerifyCode is empty")
 	//}
-	if x.User.Nickname == "" {
-		return errs.ErrArgs.WrapMsg("Nickname is nil")
-	}
+
 	if x.Platform < constantpb.IOSPlatformID || x.Platform > constantpb.AdminPlatformID {
 		return errs.ErrArgs.WrapMsg("platform is invalid")
 	}
@@ -123,11 +121,6 @@ func (x *RegisterUserReq) Check() error {
 		return errs.ErrArgs.WrapMsg("user is empty")
 	}
 	if x.User.Email == "" {
-		if x.User.AreaCode == "" {
-			return errs.ErrArgs.WrapMsg("AreaCode is empty")
-		} else if err := AreaCodeCheck(x.User.AreaCode); err != nil {
-			return err
-		}
 		if x.User.PhoneNumber == "" {
 			return errs.ErrArgs.WrapMsg("PhoneNumber is empty")
 		} else if err := PhoneNumberCheck(x.User.PhoneNumber); err != nil {
