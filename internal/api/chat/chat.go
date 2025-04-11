@@ -15,23 +15,22 @@
 package chat
 
 import (
-	"github.com/openimsdk/chat/internal/api/util"
-	"github.com/openimsdk/protocol/sdkws"
-	"io"
-	"strconv"
-	"time"
-
 	"github.com/gin-gonic/gin"
+	"github.com/openimsdk/chat/internal/api/util"
 	"github.com/openimsdk/chat/pkg/common/apistruct"
 	"github.com/openimsdk/chat/pkg/common/imapi"
 	"github.com/openimsdk/chat/pkg/common/mctx"
 	"github.com/openimsdk/chat/pkg/protocol/admin"
 	chatpb "github.com/openimsdk/chat/pkg/protocol/chat"
 	constantpb "github.com/openimsdk/protocol/constant"
+	"github.com/openimsdk/protocol/sdkws"
 	"github.com/openimsdk/tools/a2r"
 	"github.com/openimsdk/tools/apiresp"
 	"github.com/openimsdk/tools/errs"
 	"github.com/openimsdk/tools/log"
+	"io"
+	"strconv"
+	"time"
 )
 
 func New(chatClient chatpb.ChatClient, adminClient admin.AdminClient, imApiCaller imapi.CallerInterface, api *util.Api) *Api {
@@ -136,10 +135,11 @@ func (o *Api) RegisterUser(c *gin.Context) {
 		apiresp.GinError(c, err)
 		return
 	}
-
+	//
 	userInfo := &sdkws.UserInfo{
 		UserID:     respRegisterUser.UserID,
 		Nickname:   nickname,
+		FaceURL:    req.User.FaceURL,
 		CreateTime: time.Now().UnixMilli(),
 	}
 	err = o.imApiCaller.RegisterUser(apiCtx, []*sdkws.UserInfo{userInfo})
