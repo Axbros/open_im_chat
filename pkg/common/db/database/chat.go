@@ -215,6 +215,7 @@ func (o *ChatDatabase) DelVerifyCode(ctx context.Context, id string) error {
 }
 
 func (o *ChatDatabase) RegisterUser(ctx context.Context, register *chatdb.Register, account *chatdb.Account, attribute *chatdb.Attribute, credentials []*chatdb.Credential) error {
+
 	return o.tx.Transaction(ctx, func(ctx context.Context) error {
 		if err := o.register.Create(ctx, register); err != nil {
 			return err

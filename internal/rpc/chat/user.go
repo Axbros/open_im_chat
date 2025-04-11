@@ -209,7 +209,6 @@ func (o *chatSvr) AddUserAccount(ctx context.Context, req *chat.AddUserAccountRe
 	if _, _, err := mctx.Check(ctx); err != nil {
 		return nil, err
 	}
-
 	if err := o.checkRegisterInfo(ctx, req.User, true); err != nil {
 		return nil, err
 	}

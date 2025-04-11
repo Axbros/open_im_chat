@@ -19,6 +19,7 @@ import "github.com/openimsdk/protocol/sdkws"
 type UserRegisterResp struct {
 	ImToken   string `json:"imToken"`
 	ChatToken string `json:"chatToken"`
+	NickName  string `json:"nickName"`
 	UserID    string `json:"userID"`
 }
 
