@@ -324,9 +324,9 @@ func (o *chatSvr) SearchUserPublicInfo(ctx context.Context, req *chat.SearchUser
 }
 
 func (o *chatSvr) FindUserFullInfo(ctx context.Context, req *chat.FindUserFullInfoReq) (*chat.FindUserFullInfoResp, error) {
-	if _, _, err := mctx.Check(ctx); err != nil {
-		return nil, err
-	}
+	// if _, _, err := mctx.Check(ctx); err != nil {
+	// 	return nil, err
+	// }
 	if len(req.UserIDs) == 0 {
 		return nil, errs.ErrArgs.WrapMsg("UserIDs is empty")
 	}
