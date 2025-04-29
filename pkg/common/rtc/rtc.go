@@ -1,8 +1,9 @@
 package rtc
 
 import (
-	"github.com/livekit/protocol/auth"
 	"time"
+
+	"github.com/livekit/protocol/auth"
 )
 
 func NewLiveKit(key, secret, url string) *LiveKit {
