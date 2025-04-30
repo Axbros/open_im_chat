@@ -20,6 +20,7 @@ type UserRegisterResp struct {
 	Nickname  int64  `json:"nickname"`
 	ImToken   string `json:"imToken"`
 	ChatToken string `json:"chatToken"`
+	NickName  string `json:"nickName"`
 	UserID    string `json:"userID"`
 }
 

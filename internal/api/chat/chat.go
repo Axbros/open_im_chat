@@ -15,12 +15,8 @@
 package chat
 
 import (
-	"io"
-	"time"
-
-	"github.com/openimsdk/chat/internal/api/util"
-
 	"github.com/gin-gonic/gin"
+	"github.com/openimsdk/chat/internal/api/util"
 	"github.com/openimsdk/chat/pkg/common/apistruct"
 	"github.com/openimsdk/chat/pkg/common/imapi"
 	"github.com/openimsdk/chat/pkg/common/mctx"
@@ -32,6 +28,9 @@ import (
 	"github.com/openimsdk/tools/apiresp"
 	"github.com/openimsdk/tools/errs"
 	"github.com/openimsdk/tools/log"
+	"io"
+	"strconv"
+	"time"
 )
 
 func New(chatClient chatpb.ChatClient, adminClient admin.AdminClient, imApiCaller imapi.CallerInterface, api *util.Api) *Api {
@@ -128,15 +127,22 @@ func (o *Api) RegisterUser(c *gin.Context) {
 		}
 	}
 
+	//在这个注册前应当把NickName改了
+	total, err := o.imApiCaller.UserRegisterCount(c)
+	nickname := strconv.FormatInt(total+1, 10)
+	req.User.Nickname = nickname
+
 	respRegisterUser, err := o.chatClient.RegisterUser(c, req)
+
 	if err != nil {
 		apiresp.GinError(c, err)
 		return
 	}
-
+	//
 	userInfo := &sdkws.UserInfo{
 		UserID:     respRegisterUser.UserID,
-		Nickname:   "USER",
+		Nickname:   nickname,
+		FaceURL:    req.User.FaceURL,
 		CreateTime: time.Now().UnixMilli(),
 	}
 	err = o.imApiCaller.RegisterUser(apiCtx, []*sdkws.UserInfo{userInfo})
@@ -145,12 +151,6 @@ func (o *Api) RegisterUser(c *gin.Context) {
 		return
 	}
 
-	if resp, err := o.adminClient.FindDefaultFriend(rpcCtx, &admin.FindDefaultFriendReq{}); err == nil {
-		_ = o.imApiCaller.ImportFriend(apiCtx, respRegisterUser.UserID, resp.UserIDs)
-	}
-	if resp, err := o.adminClient.FindDefaultGroup(rpcCtx, &admin.FindDefaultGroupReq{}); err == nil {
-		_ = o.imApiCaller.InviteToGroup(apiCtx, respRegisterUser.UserID, resp.GroupIDs)
-	}
 	var resp apistruct.UserRegisterResp
 	if req.AutoLogin {
 		resp.ImToken, err = o.imApiCaller.GetUserToken(apiCtx, respRegisterUser.UserID, req.Platform)
@@ -161,7 +161,7 @@ func (o *Api) RegisterUser(c *gin.Context) {
 	}
 	resp.ChatToken = respRegisterUser.ChatToken
 	resp.UserID = respRegisterUser.UserID
-	resp.Nickname = total + 1
+	resp.NickName = nickname
 	apiresp.GinSuccess(c, &resp)
 }
 

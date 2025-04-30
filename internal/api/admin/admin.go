@@ -21,7 +21,6 @@ import (
 	"github.com/openimsdk/chat/pkg/protocol/chat"
 	"github.com/openimsdk/protocol/constant"
 	"github.com/openimsdk/protocol/sdkws"
-	"github.com/openimsdk/protocol/user"
 	"github.com/openimsdk/tools/a2r"
 	"github.com/openimsdk/tools/apiresp"
 	"github.com/openimsdk/tools/errs"
@@ -377,17 +376,13 @@ func (o *Api) LoginUserCount(c *gin.Context) {
 }
 
 func (o *Api) NewUserCount(c *gin.Context) {
-	req, err := a2r.ParseRequest[user.UserRegisterCountReq](c)
-	if err != nil {
-		apiresp.GinError(c, err)
-		return
-	}
+
 	imToken, err := o.imApiCaller.ImAdminTokenWithDefaultAdmin(c)
 	if err != nil {
 		apiresp.GinError(c, err)
 		return
 	}
-	total, err := o.imApiCaller.UserRegisterCount(mctx.WithApiToken(c, imToken), req.Start, req.End)
+	total, err := o.imApiCaller.UserRegisterCount(mctx.WithApiToken(c, imToken))
 	if err != nil {
 		apiresp.GinError(c, err)
 		return
