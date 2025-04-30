@@ -95,11 +95,14 @@ func (o *Api) RegisterUser(c *gin.Context) {
 	}
 	apiCtx := mctx.WithApiToken(c, imToken)
 	rpcCtx := o.WithAdminUser(c)
-	// total, err := o.imApiCaller.UserRegisterCount(apiCtx, 1738330377010, 1738330377011)
-	// if err != nil {
-	// 	apiresp.GinError(c, err)
-	// 	return
-	// }
+
+	//imserver正常 但是这里返回 0
+	total, err := o.imApiCaller.UserRegisterCount(apiCtx, 1738330377010, 1738330377011)
+
+	if err != nil {
+		apiresp.GinError(c, err)
+		return
+	}
 
 	checkResp, err := o.chatClient.CheckUserExist(rpcCtx, &chatpb.CheckUserExistReq{User: req.User})
 	if err != nil {
