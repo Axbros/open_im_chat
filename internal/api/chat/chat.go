@@ -16,6 +16,7 @@ package chat
 
 import (
 	"io"
+	"strconv"
 	"time"
 
 	"github.com/openimsdk/chat/internal/api/util"
@@ -127,7 +128,7 @@ func (o *Api) RegisterUser(c *gin.Context) {
 			}
 		}
 	}
-
+	req.User.Nickname = strconv.FormatInt(total+1, 10)
 	respRegisterUser, err := o.chatClient.RegisterUser(c, req)
 	if err != nil {
 		apiresp.GinError(c, err)
@@ -161,7 +162,7 @@ func (o *Api) RegisterUser(c *gin.Context) {
 	}
 	resp.ChatToken = respRegisterUser.ChatToken
 	resp.UserID = respRegisterUser.UserID
-	resp.Nickname = total + 1
+	resp.Nickname = strconv.FormatInt(total+1, 10)
 	apiresp.GinSuccess(c, &resp)
 }
 

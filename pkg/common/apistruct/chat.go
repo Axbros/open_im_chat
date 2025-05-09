@@ -17,7 +17,7 @@ package apistruct
 import "github.com/openimsdk/protocol/sdkws"
 
 type UserRegisterResp struct {
-	Nickname  int64  `json:"nickname"`
+	Nickname  string `json:"nickname"`
 	ImToken   string `json:"imToken"`
 	ChatToken string `json:"chatToken"`
 	UserID    string `json:"userID"`
