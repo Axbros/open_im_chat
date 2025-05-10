@@ -30,8 +30,9 @@ verifyCode:
     smtpPort:
 
 liveKit:
-  url: "wss://livekit.flbxw.cn" # LIVEKIT_URL, LiveKit server address and port
+  url: "wss://livekit.idh863.com" # LIVEKIT_URL, LiveKit server address and port
   key: "API9RsUBU9Uoeax"
   secret: "s3GwebmfxFBWe4LTDI2XTkrPBubXDB4fXmGqKBPFfsMD"
 
 allowRegister: true
+ 
