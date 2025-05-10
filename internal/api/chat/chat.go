@@ -105,7 +105,7 @@ func (o *Api) RegisterUser(c *gin.Context) {
 		apiresp.GinError(c, err)
 		return
 	}
-	newNickName := total + 1
+	newNickName := fmt.Sprintf("%d", total+1)
 
 	checkResp, err := o.chatClient.CheckUserExist(rpcCtx, &chatpb.CheckUserExistReq{User: req.User})
 	if err != nil {
