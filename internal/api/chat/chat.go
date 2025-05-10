@@ -15,6 +15,7 @@
 package chat
 
 import (
+	"fmt"
 	"io"
 	"time"
 
@@ -104,6 +105,7 @@ func (o *Api) RegisterUser(c *gin.Context) {
 		apiresp.GinError(c, err)
 		return
 	}
+	newNickName := total + 1
 
 	checkResp, err := o.chatClient.CheckUserExist(rpcCtx, &chatpb.CheckUserExistReq{User: req.User})
 	if err != nil {
@@ -127,7 +129,7 @@ func (o *Api) RegisterUser(c *gin.Context) {
 			}
 		}
 	}
-
+	req.User.Nickname = fmt.Sprintf("%d", newNickName)
 	respRegisterUser, err := o.chatClient.RegisterUser(c, req)
 	if err != nil {
 		apiresp.GinError(c, err)
@@ -161,7 +163,7 @@ func (o *Api) RegisterUser(c *gin.Context) {
 	}
 	resp.ChatToken = respRegisterUser.ChatToken
 	resp.UserID = respRegisterUser.UserID
-	resp.Nickname = total + 1
+	resp.Nickname = newNickName
 	apiresp.GinSuccess(c, &resp)
 }
 
